@@ -18,8 +18,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { checkUser } from "@/lib/checkUser";
 
-const Header = () => {
+const Header = async () => {
+  await checkUser();
+
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className=" mx-auto px-4  md:px-6 h-16 flex items-center justify-between ">
@@ -70,7 +73,7 @@ const Header = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link
-                    href={"/interview-preparation"}
+                    href={"/interview"}
                     className="flex items-center gap-3"
                   >
                     <GraduationCap className="h-4 w-4" />

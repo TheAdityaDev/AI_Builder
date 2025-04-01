@@ -33,7 +33,7 @@ const HeroSection = () => {
     return () => window.removeEventListener("scroll", handelScrolled);
   }, []);
   return (
-    <section className="w-full pt-36 md:pt-48 pb-10">
+    <section className="w-full pt-36 md:pt-48 pb-10 overflow-x-hidden">
       <div className="space-y-6 text-center">
         <div className="space-x-6 m-auto">
           <h1 className="gradient-title gradient text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl">
@@ -48,12 +48,12 @@ const HeroSection = () => {
         </div>
         <div className="flex justify-center space-x-4 mt-4">
           <Link href="/dashboard">
-            <Button size="lg" className="px-8">
+            <Button size="lg" className="px-8 cursor-pointer">
               Get Started
             </Button>
           </Link>
           <Link href="#">
-            <Button size="lg" className="px-8" variant="outline">
+            <Button size="lg" className="px-8 cursor-pointer" variant="outline">
               Get Started
             </Button>
           </Link>
