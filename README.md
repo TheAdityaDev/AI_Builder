@@ -2,18 +2,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
@@ -52,8 +40,6 @@ This logo features:
 ## Attractive README.md File
 
 # Interview Prep Pro 🚀
-
-![Interview Prep Pro Logo](./logo.svg)
 
 A comprehensive interview preparation platform built with React and Next.js to help job seekers ace their interviews.
 
@@ -132,7 +118,3 @@ This README includes:
 - Call-to-action for users
 
 Both assets maintain a consistent professional yet modern aesthetic that would appeal to job seekers while clearly communicating the project's value proposition.
-
-```
-
-```
