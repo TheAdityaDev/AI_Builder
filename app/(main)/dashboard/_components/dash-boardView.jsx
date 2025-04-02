@@ -1,3 +1,4 @@
+"use client"
 
 import { Badge } from "@/components/ui/badge";
 import { format, formatDistanceToNow } from "date-fns";
@@ -17,6 +18,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import { Progress } from "@/components/ui/progress";
 
@@ -138,6 +141,47 @@ const DashboardView = ({ insights }) => {
           </CardContent>
         </Card>
       </div>
+      {/* Chart Start */}
+      <Card className="col-span-4">
+        <CardHeader>
+          <CardTitle>Salary Ranges by Role</CardTitle>
+          <CardDescription>
+            Displaying minimum, median, and maximum salaries (in thousands)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={salaryData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="bg-background border rounded-lg p-2 shadow-md">
+                          <p className="font-medium">{label}</p>
+                          {payload.map((item) => (
+                            <p key={item.name} className="text-sm">
+                              {item.name}: ${item.value}K
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
+                <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
+                <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+      {/* end */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
@@ -157,47 +201,7 @@ const DashboardView = ({ insights }) => {
             </ul>
           </CardContent>
         </Card>
-        {/* Chart Start */}
-        {/* <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Salary Ranges by Role</CardTitle>
-            <CardDescription>
-              Displaying minimum, median, and maximum salaries (in thousands)
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={salaryData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="bg-background border rounded-lg p-2 shadow-md">
-                            <p className="font-medium">{label}</p>
-                            {payload.map((item) => (
-                              <p key={item.name} className="text-sm">
-                                {item.name}: ${item.value}K
-                              </p>
-                            ))}
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
-                  <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
-                  <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card> */}
-        {/* end */}
+
         <Card>
           <CardHeader>
             <CardTitle>Recommended Skills</CardTitle>
