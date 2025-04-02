@@ -41,17 +41,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Here's a simple yet professional SVG logo for your interview preparation project:
 
-```svg
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="200" rx="30" fill="#3B82F6"/>
-  <path d="M60 70H140V90H60V70Z" fill="white"/>
-  <path d="M60 110H140V130H60V110Z" fill="white"/>
-  <path d="M80 150H120V170H80V150Z" fill="white"/>
-  <circle cx="100" cy="50" r="10" fill="#F59E0B"/>
-  <path d="M100 30V50M100 50L92 42M100 50L108 42" stroke="#F59E0B" stroke-width="4"/>
-</svg>
-```
-
 This logo features:
 
 - A blue rounded rectangle background (professional color)
@@ -62,7 +51,6 @@ This logo features:
 
 ## Attractive README.md File
 
-````markdown
 # Interview Prep Pro 🚀
 
 ![Interview Prep Pro Logo](./logo.svg)
@@ -107,12 +95,6 @@ A comprehensive interview preparation platform built with React and Next.js to h
 
 ## Getting Started 🛠️
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/interview-prep-pro.git
-   ```
-````
-
 2. Install dependencies:
 
    ```bash
@@ -138,11 +120,8 @@ We welcome contributions! Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) f
 
 This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
 
----
-
-```
-
 This README includes:
+
 - Eye-catching emoji headers
 - Clear feature breakdown
 - Technology stack information
@@ -153,4 +132,7 @@ This README includes:
 - Call-to-action for users
 
 Both assets maintain a consistent professional yet modern aesthetic that would appeal to job seekers while clearly communicating the project's value proposition.
+
+```
+
 ```
