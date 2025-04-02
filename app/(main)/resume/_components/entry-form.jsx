@@ -16,7 +16,7 @@ import { date } from 'zod'
 
 
 const formatDisplayDate = (dateString) => {
-    if (dateString) return ""
+    if (!dateString) return ""
     const date = parse(dateString, "yyyy-MM", new Date())
     return format(date, "MMM yyyy")
 }
@@ -94,8 +94,8 @@ const EntryForm = ({ type, entries, onChange }) => {
         <div>
             <div>{entries.map((item, index) => {
                 return (
-                    <Card key={index}>
-                        <CardHeader>
+                    <Card key={index} className="space-y-4 mb-5">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle>
                                 {item.title} @ {item.organization}
                             </CardTitle>
@@ -232,7 +232,7 @@ const EntryForm = ({ type, entries, onChange }) => {
             )
             }
             {!isAdding && (
-                <Button className="w-full"
+                <Button className="w-full mt-5 cursor-pointer"
                     onClick={() => setIsAdding(true)}
                     variant="outline">
                     <PlusCircle className='h-4 w-4 mr-2' />

@@ -21,7 +21,7 @@ export const saveResume = async (content) => {
     const resume = await db.resume.upsert({
       where: { userId: user.id },
       create: { userId: user.id, content },
-      update: { content: {} },
+      update: { content },
     });
 
     revalidatePath("/resume");

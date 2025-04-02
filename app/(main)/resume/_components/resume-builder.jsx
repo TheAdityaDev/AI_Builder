@@ -1,6 +1,6 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { AlertTriangle, Download, Edit, Monitor, Save } from 'lucide-react'
+import { AlertTriangle, Download, Edit, Loader2, Monitor, Save } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Controller, useForm } from 'react-hook-form'
@@ -14,11 +14,14 @@ import EntryForm from './entry-form'
 import { entriesToMarkdown } from '@/app/lib/helper'
 import MDEditor from '@uiw/react-md-editor'
 import { useUser } from '@clerk/nextjs'
+import { toast } from 'sonner'
+import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 
 const ResumeBuilder = ({ initialContent }) => {
     const [activeTab, setActiveTab] = useState("edit");
     const [resumeMode, setResumeMode] = useState("preview")
     const [previewContent, setPreviewContent] = useState(initialContent)
+    const [isGenerating, setIsGenerating] = useState(false)
 
     const { user } = useUser()
 
@@ -44,8 +47,8 @@ const ResumeBuilder = ({ initialContent }) => {
         const parts = []
         if (contactInfo.email) parts.push(`📧 ${contactInfo.email}`)
         if (contactInfo.mobile) parts.push(`📞 ${contactInfo.mobile}`)
-        if (contactInfo.linkedin) parts.push(`🔗 [Linkedin] ${contactInfo.linkedin}`)
-        if (contactInfo.twitter) parts.push(`𝕏 [X] ${contactInfo.twitter}`)
+        if (contactInfo.linkedin) parts.push(`🔗 [Linkedin] (${contactInfo.linkedin})`)
+        if (contactInfo.twitter) parts.push(`𝕏 [X]( ${contactInfo.twitter})`)
 
         return parts.length > 0
             ? `##  <div align="center">${user.fullName}</div>
@@ -57,7 +60,7 @@ const ResumeBuilder = ({ initialContent }) => {
         const { summary, skills, education, experience, projects } = formValues
 
         return [
-            entriesToMarkdown(),
+            getContactMarkdown(),
             summary && `## Professional Summary\n\n${summary}`,
             skills && `## Skills \n\n${skills}`,
             entriesToMarkdown(experience, "Work Experience"),
@@ -66,8 +69,45 @@ const ResumeBuilder = ({ initialContent }) => {
         ].filter(Boolean).join("\n\n")
     }
 
-    const onSubmit = async (data) => { }
 
+
+    const generatePDF = async () => {
+        setIsGenerating(true)
+        try {
+            const element = document.getElementById('resume-pdf')
+            const opt = {
+                margin: [15, 15],
+                filename: `${user.firstName}.pdf`,
+                image: { type: "jpeg", quality: 0.98 },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+            }
+            await html2pdf().set(opt).from(element).save()
+        } catch (error) {
+            console.error("Error" + error);
+
+            toast.error("something went wrong")
+        } finally {
+            setIsGenerating(false)
+        }
+    }
+    useEffect(() => {
+        if (saveResult && !isSaving) {
+            toast.success("Resume add successfully!")
+        }
+        if (saveError) {
+            toast.error(saveError.message || "Something went wrong")
+
+        }
+    }, [saveResult, saveError, isSaving])
+
+    const onSubmit = async (data) => {
+        try {
+            await saveResumeFn(previewContent)
+        } catch (error) {
+            console.error("Error to save");
+
+        }
+    }
     const formValues = watch()
 
     useEffect(() => {
@@ -85,13 +125,35 @@ const ResumeBuilder = ({ initialContent }) => {
             <div className='flex flex-col md:flex-row items-center justify-between gap-2'>
                 <h1 className='font-bold gradient-title text-5xl md:text-6xl'>Resume Builder</h1>
                 <div className='space-x-4'>
-                    <Button className="cursor-pointer">
-                        <Save className='mr-2 h-4 w-4' />
-                        Save
+                    <Button className="cursor-pointer" onClick={onSubmit} disabled={isSaving}>
+                        {isSaving ? (
+                            <>
+                                <Loader2 className='h-4 w-4 animate-spin' />
+                                Saving PDF...
+                            </>
+
+                        ) : (
+                            <>
+                                <Save className='h-4 w-4' />
+                                Save
+                            </>
+                        )}
                     </Button>
-                    <Button className="cursor-pointer" variant="destructive">
-                        <Download className='mr-2 h-4 w-4' />
-                        Download PDF
+                    <Button className="cursor-pointer" variant="destructive"
+                        onClick={generatePDF} disabled={isGenerating}
+                    >
+                        {isGenerating ? (
+                            <>
+                                <Loader2 className='h-4 w-4 animate-spin' />
+                                Generating PDF...
+                            </>
+
+                        ) : (
+                            <>
+                                <Download className='h-4 w-4' />
+                                Download PDF
+                            </>
+                        )}
                     </Button>
                 </div>
             </div>
@@ -101,7 +163,7 @@ const ResumeBuilder = ({ initialContent }) => {
                     <TabsTrigger className="cursor-pointer" value="preview">Mark Down</TabsTrigger>
                 </TabsList>
                 <TabsContent value="edit">
-                    <form className='space-y-8' onSubmit={handleSubmit(onSubmit)}>
+                    <form className='space-y-8'>
                         <div className='space-y-4'>
                             <h3 className='text-lg font-medium'>Contact Information</h3>
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/50'>
@@ -201,17 +263,17 @@ const ResumeBuilder = ({ initialContent }) => {
 
                         <div className='space-y-2'>
                             <h3 className='text-lg font-medium'>Work Experience</h3>
-                            <Controller name='education' control={control} render={({ field }) => (
+                            <Controller name='experience' control={control} render={({ field }) => (
                                 <EntryForm
-                                    type="experience"
+                                    type="Experience"
                                     entries={field.value}
                                     onChange={field.onChange}
                                 />
                             )} />
 
-                            {errors.education && (
+                            {errors.experience && (
                                 <p className='text-sm text-red-500'>
-                                    {errors.education.message}
+                                    {errors.experience.message}
                                 </p>
                             )}
                         </div>
@@ -221,15 +283,15 @@ const ResumeBuilder = ({ initialContent }) => {
                             <h3 className='text-lg font-medium'>Education</h3>
                             <Controller name='education' control={control} render={({ field }) => (
                                 <EntryForm
-                                    type="education"
+                                    type="Education"
                                     entries={field.value}
                                     onChange={field.onChange}
                                 />
                             )} />
 
-                            {errors.experience && (
+                            {errors.education && (
                                 <p className='text-sm text-red-500'>
-                                    {errors.experience.message}
+                                    {errors.education.message}
                                 </p>
                             )}
                         </div>
@@ -280,12 +342,17 @@ const ResumeBuilder = ({ initialContent }) => {
                             </span>
                         </div>
                     )}
+                    <div className='border-2 rounded-lg'>
+                        <MDEditor value={previewContent} onChange={setPreviewContent} height={800} preview={resumeMode} />
+                    </div>
+                    <div className='hidden'>
+                        <div id='resume-pdf'>
+                            <MDEditor.Markdown source={previewContent} />
+                        </div>
+                    </div>
                 </TabsContent>
             </Tabs>
 
-            <div className='border-2 rounded-lg '>
-                <MDEditor value={previewContent} onChange={setPreviewContent} height={800} preview={resumeMode} />
-            </div>
         </div >
     )
 }
