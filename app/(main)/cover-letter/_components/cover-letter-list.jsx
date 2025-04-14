@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteCoverLetter } from "@/actions/cover-letter";
 
-export default function CoverLetterList({ coverLetters }) {
+export default function coverLettersList({ coverLetters }) {
     const router = useRouter();
 
     const handleDelete = async (id) => {
@@ -84,7 +84,7 @@ export default function CoverLetterList({ coverLetters }) {
                                             <AlertDialogTitle>Delete Cover Letter?</AlertDialogTitle>
                                             <AlertDialogDescription>
                                                 This action cannot be undone. This will permanently
-                                                delete your cover letter for {letter.jobTitle} at{" "}
+                                                delete your cover letter for {letter.jobTitle}  at{" "}
                                                 {letter.companyName}.
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>

@@ -24,7 +24,6 @@ const NewCoverLetterPage = () => {
                     </p>
                 </div>
             </div>
-
             <CoverLetterGenerator />
         </div>
     )

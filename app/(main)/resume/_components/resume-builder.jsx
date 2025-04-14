@@ -13,9 +13,9 @@ import { Textarea } from '@/components/ui/textarea'
 import EntryForm from './entry-form'
 import { entriesToMarkdown } from '@/app/lib/helper'
 import MDEditor from '@uiw/react-md-editor'
+import html2pdf from "html2pdf.js/dist/html2pdf.bundle";
 import { useUser } from '@clerk/nextjs'
 import { toast } from 'sonner'
-import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 
 const ResumeBuilder = ({ initialContent }) => {
     const [activeTab, setActiveTab] = useState("edit");
@@ -72,22 +72,22 @@ const ResumeBuilder = ({ initialContent }) => {
 
 
     const generatePDF = async () => {
-        setIsGenerating(true)
+        setIsGenerating(true);
         try {
-            const element = document.getElementById('resume-pdf')
+            const element = document.getElementById("resume-pdf");
             const opt = {
                 margin: [15, 15],
-                filename: `${user.firstName}.pdf`,
+                filename: "resume.pdf",
                 image: { type: "jpeg", quality: 0.98 },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-            }
-            await html2pdf().set(opt).from(element).save()
-        } catch (error) {
-            console.error("Error" + error);
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+            };
 
-            toast.error("something went wrong")
+            await html2pdf().set(opt).from(element).save();
+        } catch (error) {
+            console.error("PDF generation error:", error);
         } finally {
-            setIsGenerating(false)
+            setIsGenerating(false);
         }
     }
     useEffect(() => {
@@ -99,6 +99,7 @@ const ResumeBuilder = ({ initialContent }) => {
 
         }
     }, [saveResult, saveError, isSaving])
+
 
     const onSubmit = async (data) => {
         try {
@@ -346,8 +347,11 @@ const ResumeBuilder = ({ initialContent }) => {
                         <MDEditor value={previewContent} onChange={setPreviewContent} height={800} preview={resumeMode} />
                     </div>
                     <div className='hidden'>
-                        <div id='resume-pdf'>
-                            <MDEditor.Markdown source={previewContent} />
+                        <div id="resume-pdf">
+                            <MDEditor.Markdown source={previewContent} style={{
+                                background: "white",
+                                color: "black",
+                            }} />
                         </div>
                     </div>
                 </TabsContent>
