@@ -182,7 +182,7 @@ const page = () => {
       <section className="w-full ">
         <div className="mx-auto py-24 gradient rounded-lg">
           <div className="flex flex-col items-center text-center justify-center space-y-4 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter text-primary-foreground sm:text-4xl md:text-5xl">
+            <h2 className="b_title text-3xl   tracking-tighter base sm:text-4xl md:text-5xl ">
               Ready to Acierate your Career?
             </h2>
             <p className="mx-auto max-w-[600px] text-muted-foreground/80 md:text-lg">
@@ -194,6 +194,7 @@ const page = () => {
                 size="lg"
                 variant="secondary"
                 className="h-11 mt-5 animate-bounce cursor-pointer"
+
               >
                 Start your Journey <ArrowRight />
               </Button>

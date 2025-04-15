@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +15,9 @@ import Image from "next/image";
 
 const HeroSection = () => {
   const imgRef = useRef(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const imageList = ["/banner.jpeg", "/banner2.jpeg", "/banner3.jpeg"];
 
   useEffect(() => {
     const imageElement = imgRef.current;
@@ -32,7 +35,17 @@ const HeroSection = () => {
     window.addEventListener("scroll", handelScrolled);
     return () => window.removeEventListener("scroll", handelScrolled);
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageList.length);
+    }, 20000); // 20 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
+
     <section className="w-full pt-36 md:pt-48 pb-10 overflow-x-hidden">
       <div className="space-y-6 text-center">
         <div className="space-x-6 m-auto">
@@ -47,14 +60,14 @@ const HeroSection = () => {
           </p>
         </div>
         <div className="flex justify-center space-x-4 mt-4">
-          <Link href="/dashboard">
+          <Link href="#">
             <Button size="lg" className="px-8 cursor-pointer">
               Get Started
             </Button>
           </Link>
-          <Link href="#">
+          <Link href="/dashboard">
             <Button size="lg" className="px-8 cursor-pointer" variant="outline">
-              Get Started
+              Dashboard
             </Button>
           </Link>
         </div>
@@ -62,11 +75,11 @@ const HeroSection = () => {
           <div className="hero-image-wrapper mt-5 md:mt-0">
             <div ref={imgRef} className="hero-image">
               <Image
-                src={"/banner.jpeg"}
+                src={imageList[currentImageIndex]}
                 width={1280}
                 height={720}
                 alt="Dashboard Preview"
-                className="rounded-lg shadow-2xl border mx-auto"
+                className="rounded-lg shadow-2xl border mx-auto transition-opacity duration-300 animate-fadeIn"
               />
             </div>
           </div>
