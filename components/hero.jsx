@@ -39,7 +39,7 @@ const HeroSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageList.length);
-    }, 20000); // 20 seconds
+    }, 10000); // 10 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -60,9 +60,9 @@ const HeroSection = () => {
           </p>
         </div>
         <div className="flex justify-center space-x-4 mt-4">
-          <Link href="#">
+          <Link href="/interview_AI">
             <Button size="lg" className="px-8 cursor-pointer">
-              Get Started
+              Interview With AI
             </Button>
           </Link>
           <Link href="/dashboard">

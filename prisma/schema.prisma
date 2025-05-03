@@ -24,9 +24,10 @@ model User {
     experience Int?
     skills     String[]
 
-    assessment  Assessment[]
-    resume      Resume?
-    coverLetter CoverLetter[]
+    assessment   Assessment[]
+    resume       Resume?
+    coverLetter  CoverLetter[]
+    Interview_AI Interview_AI[]
 }
 
 model Assessment {
@@ -95,4 +96,37 @@ model IndustryInsight {
     nextUpdate  DateTime // Scheduled update time
 
     @@index([industry])
+}
+
+model Interview_AI {
+    id          String     @id @default(uuid())
+    userId      String
+    user        User       @relation(fields: [userId], references: [id])
+    title       String
+    description String?
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    questions   Question[]
+    feedback    Feedback[]
+}
+
+model Question {
+    id           String       @id @default(uuid())
+    interviewId  String
+    Interview_AI Interview_AI @relation(fields: [interviewId], references: [id])
+    text         String
+    userAnswer   String?
+    aiFeedback   String?
+    createdAt    DateTime     @default(now())
+}
+
+model Feedback {
+    id           String       @id @default(uuid())
+    interviewId  String
+    Interview_AI Interview_AI @relation(fields: [interviewId], references: [id])
+    overallScore Int
+    strengths    String[]
+    improvements String[]
+    notes        String?
+    createdAt    DateTime     @default(now())
 }

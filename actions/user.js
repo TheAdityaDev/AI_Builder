@@ -76,7 +76,7 @@ export async function getUserOnboardingStatus() {
   });
 
   if (!user) throw new Error("User not found");
-  let industryInsight;
+
   try {
     const user = await db.user.findUnique({
       where: {
