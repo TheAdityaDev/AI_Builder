@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { GithubIcon } from "lucide-react";
 
 /**
  * HeroSection component renders a visually appealing section
@@ -65,9 +66,10 @@ const HeroSection = () => {
               Interview With AI
             </Button>
           </Link>
-          <Link href="/dashboard">
+          <Link href="/git_profile">
             <Button size="lg" className="px-8 cursor-pointer" variant="outline">
-              Dashboard
+              <GithubIcon className="w-6 h-6 mr-2" />
+              Github Profile 
             </Button>
           </Link>
         </div>
