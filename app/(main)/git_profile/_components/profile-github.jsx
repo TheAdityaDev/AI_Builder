@@ -2,8 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { user } from "elevenlabs/api";
 import { Clock, GithubIcon, Library } from "lucide-react";
 import React, { useState } from "react";
+import { RingLoader } from "react-spinners";
 
 const ProfileGitHubUser = () => {
   const [username, setUsername] = useState("");
@@ -12,9 +14,14 @@ const ProfileGitHubUser = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchGitHubProfile = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`https://api.github.com/users/${username}`);
+    if (!username) {
+      alert("Please enter a GitHub username.");
+    }
+     username.trim();
+     setIsLoading(true);
+     try {
+       const response = await fetch(`https://api.github.com/users/${username}`);
+       if (response.status === 404) return alert("User Not Found");
       const data = await response.json();
       setProfileData(data);
 
@@ -34,7 +41,7 @@ const ProfileGitHubUser = () => {
       <CardContent>
         <h4 className="mb-5">
           <GithubIcon className="inline-block mr-2" />
-          Fetch Your Git Hub Profile...
+          Let's Get Your Git Hub Profile...
         </h4>
         <Input
           placeholder="Enter GitHub username"
@@ -43,7 +50,14 @@ const ProfileGitHubUser = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
         <Button onClick={fetchGitHubProfile} className="mt-5 cursor-pointer">
-          {isLoading ? <>Fetching....</> : <>Search Profile</>}
+          {isLoading ? (
+            <>
+              <RingLoader color="#000" size={15} />
+              Fetching....
+            </>
+          ) : (
+            <>Search Profile</>
+          )}
         </Button>
         {profileData && (
           <div>
@@ -51,7 +65,7 @@ const ProfileGitHubUser = () => {
               <img
                 src={profileData.avatar_url}
                 alt="Avatar"
-                className="h-[400px] w-[400px] rounded-full mt-5"
+                className="h-[400px] w-[400px] rounded-full mt-5 hover:rounded-3xl transition-all  delay-150 duration-150 ease-in-out"
               />
               <div className="pl-6">
                 <h1 className="text-4xl">{profileData.name}</h1>
@@ -76,7 +90,7 @@ const ProfileGitHubUser = () => {
                   <Library className="inline-block mr-2" />
                   <h4 className="mb-2">Repositories:</h4>
                 </div>
-                <div className="pl-10 flex flex-col">
+                <div className="pl-10 flex flex-col ">
                   {repos.map((repo) => (
                     <Button
                       key={repo.id}
@@ -88,7 +102,6 @@ const ProfileGitHubUser = () => {
                     </Button>
                   ))}
                 </div>
-               
               </div>
             </div>
           </div>
