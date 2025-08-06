@@ -4,10 +4,11 @@
   "private": true,
   "buildCommand": "npx prisma generate && next build",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "dev": "cross-env ENABLE_INNGEST=true next dev",
+    "build": "npx prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rimraf .next node_modules && npm install"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.11",
