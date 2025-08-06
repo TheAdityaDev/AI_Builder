@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/accordion";
 
 import Image from "next/image";
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const page = () => {
+
   return (
     <div>
       <div className="grid-background "></div>

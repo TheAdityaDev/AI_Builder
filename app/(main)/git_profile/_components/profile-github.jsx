@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { user } from "elevenlabs/api";
 import { Clock, GithubIcon, Library } from "lucide-react";
 import React, { useState } from "react";
 import { RingLoader } from "react-spinners";
@@ -69,7 +68,9 @@ const ProfileGitHubUser = () => {
               />
               <div className="pl-6">
                 <h1 className="text-4xl">{profileData.name}</h1>
-                <h2 className="mt-4">{profileData.bio}</h2>
+                {profileData.bio && profileData.bio.split('\n').map((line, index) => (
+                  <h2 key={index} className="mt-3">{line}</h2>
+                ))}
                 <div className="flex gap-10 mt-5">
                   <h4 variant="body2">Followers: {profileData.followers}</h4>
                   <h4 variant="body2">Following: {profileData.following}</h4>

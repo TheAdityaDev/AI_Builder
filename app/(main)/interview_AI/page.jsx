@@ -1,12 +1,12 @@
-"use client"
 import React from 'react'
-import InterviewAssistant from './_components/InterviewAssistant';
-const AI_Interview_Speech = () => {
+import InterviewAssistant from './_components/InterviewAssistant'
+
+const page = () => {
   return (
-    <div className='h-screen'>
-      <InterviewAssistant />
+    <div>
+        <InterviewAssistant />
     </div>
-  );
+  )
 }
 
-export default AI_Interview_Speech
+export default page
